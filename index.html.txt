@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>happy birthday!</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:ital,wght@0,400;0,600;0,700;1,600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#faf5ea;
+    --paper-dark:#efe6d3;
+    --gingham-red:#b3372c;
+    --gingham-red-2:#c94b3e;
+    --envelope-dark:#7c1f22;
+    --envelope-mid:#932a28;
+    --envelope-line:#5c1417;
+    --kraft:#d9c39e;
+    --kraft-edge:#c2a97c;
+    --ink:#4a2b1e;
+    --cream:#fffaf0;
+    --gold:#e0a63a;
+    --pink:#e88aa0;
+  }
+  * { box-sizing:border-box; }
+  html,body{ margin:0; padding:0; min-height:100%; background:var(--gingham-red); font-family:'Nunito', sans-serif; overflow-x:hidden; }
+  body{
+    display:flex; align-items:center; justify-content:center; min-height:100vh; padding:32px 16px;
+    background-color:#f2e9d8;
+    background-image:
+      repeating-linear-gradient(0deg, rgba(179,55,44,0.55) 0 18px, transparent 18px 36px),
+      repeating-linear-gradient(90deg, rgba(179,55,44,0.55) 0 18px, transparent 18px 36px),
+      repeating-linear-gradient(0deg, rgba(179,55,44,0.28) 0 36px, transparent 36px 72px),
+      repeating-linear-gradient(90deg, rgba(179,55,44,0.28) 0 36px, transparent 36px 72px);
+    background-size: 36px 36px, 36px 36px, 72px 72px, 72px 72px;
+  }
+  .stage{ position:relative; width:min(420px, 92vw); }
+  .banner-wrap{ display:flex; justify-content:center; margin-bottom:22px; }
+  .banner{
+    background:var(--pink); color:var(--cream); font-family:'Baloo 2', sans-serif; font-weight:800;
+    font-size:clamp(22px, 6vw, 30px); letter-spacing:0.5px; padding:10px 26px; border-radius:6px;
+    box-shadow: 0 6px 0 rgba(0,0,0,0.08); transform:rotate(-1.2deg); text-align:center;
+  }
+  .card{
+    position:relative; background:var(--paper); border-radius:18px; padding:26px 22px 60px;
+    box-shadow: 0 2px 0 rgba(255,255,255,0.5) inset, 0 18px 40px rgba(70,20,15,0.35); overflow:hidden;
+  }
+  .card::before{
+    content:""; position:absolute; inset:10px; border:2px dashed rgba(179,55,44,0.35); border-radius:12px; pointer-events:none;
+  }
+  .envelope-zone{ position:relative; width:100%; aspect-ratio: 4 / 5; display:flex; align-items:center; justify-content:center; }
+  .mat{
+    position:absolute; inset:6%;
+    background:
+      repeating-linear-gradient(0deg, rgba(179,55,44,0.45) 0 10px, transparent 10px 20px),
+      repeating-linear-gradient(90deg, rgba(179,55,44,0.45) 0 10px, transparent 10px 20px),
+      var(--kraft);
+    background-size:20px 20px, 20px 20px, auto; border-radius:10px; box-shadow: 0 10px 24px rgba(70,20,15,0.25);
+  }
+  .mat::after{
+    content:""; position:absolute; inset:0; border-radius:10px; border:6px solid var(--paper);
+    outline:2px solid var(--kraft-edge); outline-offset:-6px;
+  }
+  .envelope{
+    position:relative; width:74%; aspect-ratio: 3.3 / 4; cursor:pointer;
+    -webkit-tap-highlight-color:transparent; user-select:none; perspective:900px;
+  }
+  .envelope-body{
+    position:absolute; inset:0; background:linear-gradient(180deg, var(--envelope-mid), var(--envelope-dark));
+    border-radius:6px; box-shadow: 0 10px 22px rgba(45,10,8,0.45); overflow:hidden;
+  }
+  .envelope-body::before{
+    content:""; position:absolute; left:8%; right:8%; top:0; bottom:0; background:var(--cream);
+    clip-path: polygon(0% 0%, 100% 0%, 50% 62%);
+  }
+  .seam{ position:absolute; inset:0; pointer-events:none; }
+  .seam svg{ width:100%; height:100%; display:block; }
+  .letter{
+    position:absolute; left:9%; right:9%; bottom:6%; top:8%; background:var(--cream); border-radius:4px;
+    box-shadow: 0 6px 14px rgba(45,10,8,0.25); transform: translateY(28%);
+    transition: transform 700ms cubic-bezier(.34,1.4,.4,1);
+    display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center;
+    padding:10% 8%; z-index:2;
+  }
+  .letter .to{ font-family:'Baloo 2', sans-serif; font-weight:700; color:var(--ink); font-size:clamp(13px,3.6vw,16px); margin:0 0 6px; }
+  .letter .msg{ font-family:'Baloo 2', sans-serif; font-weight:800; color:var(--gingham-red); font-size:clamp(16px,4.6vw,22px); line-height:1.15; margin:0 0 8px; }
+  .letter .sub{ font-size:clamp(11px,3vw,13px); color:#8a6a52; margin:0; }
+  .letter .heart-row{ margin-top:10px; font-size:18px; letter-spacing:4px; }
+  .flap{
+    position:absolute; left:0; right:0; top:0; height:64%; transform-origin: top center;
+    transform-style:preserve-3d; transition: transform 700ms cubic-bezier(.5,0,.2,1); z-index:3;
+    clip-path: polygon(0% 0%, 100% 0%, 50% 100%);
+    background:linear-gradient(160deg, var(--gingham-red-2), var(--envelope-dark) 70%);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  }
+  .flap::after{ content:""; position:absolute; inset:0; background:linear-gradient(155deg, rgba(255,255,255,0.12), transparent 55%); }
+  .envelope.open .flap{ transform: rotateX(178deg); }
+  .envelope.open .letter{ transform: translateY(-6%); }
+  .pin{ position:absolute; top:-4%; right:8%; width:15%; z-index:5; transform:rotate(18deg); filter: drop-shadow(0 3px 3px rgba(0,0,0,0.3)); }
+  .star{ position:absolute; color:var(--gold); z-index:5; }
+  .star.s1{ bottom:5%; left:2%; width:11%; transform:rotate(-12deg); }
+  .star.s2{ top:4%; left:-2%; width:7%; transform:rotate(8deg); opacity:0.9; }
+  .heart{ position:absolute; color:var(--pink); z-index:5; }
+  .heart.h1{ bottom:10%; left:10%; width:8%; transform:rotate(-8deg); }
+  .heart.h2{ bottom:4%; left:18%; width:6%; transform:rotate(10deg); opacity:0.85; }
+  .sticky{
+    position:absolute; right:18px; bottom:18px; max-width:132px; background:var(--kraft); color:var(--ink);
+    font-family:'Baloo 2', sans-serif; font-weight:700; font-size:11px; line-height:1.25; letter-spacing:0.3px;
+    text-transform:uppercase; text-align:center; padding:10px 12px; border-radius:3px; transform:rotate(-4deg);
+    box-shadow: 0 6px 12px rgba(45,10,8,0.25); border:1px dashed var(--kraft-edge); pointer-events:none;
+  }
+  .hint{ text-align:center; margin-top:14px; font-size:13px; color:#8a4a3f; font-weight:600; }
+  @media (prefers-reduced-motion: reduce){ .flap, .letter{ transition:none; } }
+  @media (max-width:380px){ .sticky{ right:10px; bottom:10px; max-width:110px; font-size:10px; padding:8px 10px; } }
+</style>
+</head>
+<body>
+
+<div class="stage">
+  <div class="banner-wrap"><div class="banner">happy birthday!</div></div>
+
+  <div class="card">
+    <div class="envelope-zone">
+      <div class="mat"></div>
+
+      <div class="envelope" id="envelope" role="button" tabindex="0" aria-pressed="false" aria-label="Open birthday letter">
+
+        <svg class="pin" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="14" cy="14" r="10" fill="#c23b3b" stroke="#7c1f22" stroke-width="1.5"/>
+          <circle cx="11" cy="11" r="2.6" fill="#f2a5a5"/>
+          <line x1="18" y1="18" x2="30" y2="30" stroke="#7c1f22" stroke-width="2.5" stroke-linecap="round"/>
+        </svg>
+
+        <svg class="star s1" viewBox="0 0 40 40" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+          <path d="M20 2 L24.5 14.5 L38 15.5 L27.5 24 L31 37.5 L20 30 L9 37.5 L12.5 24 L2 15.5 L15.5 14.5 Z"/>
+        </svg>
+        <svg class="star s2" viewBox="0 0 40 40" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+          <path d="M20 2 L24.5 14.5 L38 15.5 L27.5 24 L31 37.5 L20 30 L9 37.5 L12.5 24 L2 15.5 L15.5 14.5 Z"/>
+        </svg>
+
+        <svg class="heart h1" viewBox="0 0 40 36" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+          <path d="M20 34 C6 24 1 15 6 9 C10 4 17 5 20 12 C23 5 30 4 34 9 C39 15 34 24 20 34 Z"/>
+        </svg>
+        <svg class="heart h2" viewBox="0 0 40 36" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+          <path d="M20 34 C6 24 1 15 6 9 C10 4 17 5 20 12 C23 5 30 4 34 9 C39 15 34 24 20 34 Z"/>
+        </svg>
+
+        <div class="envelope-body">
+          <div class="seam">
+            <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+              <path d="M 8 0 L 50 62 L 92 0" fill="none" stroke="#5c1417" stroke-width="1.2" vector-effect="non-scaling-stroke" opacity="0.35"/>
+            </svg>
+          </div>
+
+          <div class="letter">
+            <p class="to">to a wonderful someone,</p>
+            <p class="msg">wishing you the<br>happiest birthday!</p>
+            <p class="sub">may your day be full of cake,<br>confetti &amp; good company.</p>
+            <div class="heart-row">✦ ♥ ✦</div>
+          </div>
+        </div>
+
+        <div class="flap"></div>
+      </div>
+    </div>
+
+    <div class="sticky">click letter to open &amp; close</div>
+  </div>
+
+  <p class="hint" id="hint">tap the envelope to open it</p>
+</div>
+
+<script>
+  const envelope = document.getElementById('envelope');
+  const hint = document.getElementById('hint');
+
+  function toggleEnvelope(){
+    const isOpen = envelope.classList.toggle('open');
+    envelope.setAttribute('aria-pressed', String(isOpen));
+    hint.textContent = isOpen ? 'tap again to close it' : 'tap the envelope to open it';
+  }
+
+  envelope.addEventListener('click', toggleEnvelope);
+  envelope.addEventListener('keydown', function(e){
+    if(e.key === 'Enter' || e.key === ' '){
+      e.preventDefault();
+      toggleEnvelope();
+    }
+  });
+</script>
+
+</body>
+</html>
